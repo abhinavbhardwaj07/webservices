@@ -91,3 +91,10 @@ All are REST APIs(response will be returned in JSON format)
 		"success": true
 	}
 	Here, "is_malicious" value will reflect weather url is malicious or not(third party can use "is_malicious")
+
+
+TestCase:
+
+Test case to check If url is malicious or not is present under location "url_lookup_service/test.py"
+Command to run test: under "webservices-master", python manage.py test
+Above command will run the tests present in "url_lookup_service/test.py"
