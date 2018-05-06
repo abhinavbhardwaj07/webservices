@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import logging
 from .serializers import UserSerializer
 from .models import MaliciousUrlsDetails
 from rest_framework.views import APIView
@@ -8,6 +9,9 @@ from django.contrib.auth.models import User
 from mongoengine.errors import DoesNotExist
 from rest_framework.response import Response
 import rest_framework_mongoengine.viewsets as mongo_viewsets
+
+# Get an instance of a logger
+logger = logging.getLogger('root')
 
 # Create your views here.
 
@@ -42,6 +46,7 @@ class ResourceDetails(mongo_viewsets.ReadOnlyModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         try:
+            logger.info('Fetching the URL Information...')
             record = MaliciousUrlsDetails.objects.get(host=kwargs.get("host"), port=kwargs.get("port"), original_path=kwargs.get("original_path"))
             data = {
                 "success": True,
@@ -52,6 +57,7 @@ class ResourceDetails(mongo_viewsets.ReadOnlyModelViewSet):
             }
         # As we maintain only malicious urls in the db. If not present in db its not malicious
         except DoesNotExist:
+            logger.info('URL Information not available in database...')
             data = {
                 "success": True,
                 "host": kwargs.get("host"),
