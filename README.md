@@ -11,13 +11,13 @@ How to Deploy and run the server?
 
 Deployment:
 
-User shall take linux system(I used CentOS), Copy the entire folder "webservices" in some location.
-User shall navigate to the location of the folder under "webservices"
+User shall take linux system(I used CentOS), Copy the entire folder "webservices-master" in some location.
+User shall navigate to the location of the folder under "webservices-master"
 
 
 Some setting changes:
 This project uses:
-1) mongodb to fetch the details of urls. so, User need to update the mongodb connection string under "webservices/webservices/settings.py"
+1) mongodb to fetch the details of urls. so, User need to update the mongodb connection string under "webservices-master/webservices/settings.py"
 
 mongoengine.connect(db='intelligence',
                     host='<some_host>',
@@ -26,11 +26,21 @@ mongoengine.connect(db='intelligence',
                     password='<some_password>')
 					
 2) sqlite to store the information of the users
+In order to migrate the tables in sqlite, python manage.py migrate
+
+3) create the superuser for the django admin
+ python manage.py createsuperuser
+ Username (leave blank to use 'aztec'): s_user
+Email address: s_user@mail.com
+Password:
+Password (again):
+Superuser created successfully.
+(When User calls /users API, this user shall be shown in JSON format)
 
 
 Running Server:
 
-Under "webservices"
+Under "webservices-master"
 User need to run "python manage.py runserver 0.0.0.0:8000"
 
 Databases:
