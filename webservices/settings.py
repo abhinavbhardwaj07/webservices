@@ -129,3 +129,54 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# ==============================================================================
+# LOGGING
+# ==============================================================================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': "logs/url_lookup.log",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'logfile'],
+            'propagate': True,
+        },
+        'root': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'logfile']
+        },
+        'url_lookup_service.apps.UrlLookupServiceConfig': {
+            'handlers': ['console', 'logfile'],
+            'level': 'INFO'
+        }
+    }
+}
